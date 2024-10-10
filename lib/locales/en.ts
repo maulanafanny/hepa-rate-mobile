@@ -28,7 +28,7 @@ const English = {
   screen404: "This screen doesn't exist",
   titleHome: 'Home',
   titleModal: 'Modal',
-  titleInformation: 'Information',
+  titleInformation: 'Informasi Umum',
   titleNotFound: 'Not Found',
   titleSettings: 'Settings',
   restartApp: 'Restart the app to apply changes',
