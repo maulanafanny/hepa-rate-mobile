@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet, ScrollView, View } from 'react-native'
 import {
   DataTable,
   Card,
-  Surface,
   ActivityIndicator,
   Menu,
   Button,
@@ -34,24 +33,24 @@ type Criteria = {
 }
 
 const CriteriaTable = () => {
-  const [data, setData] = useState<Criteria[]>([])
+  const [criterias, setCriterias] = useState<Criteria[]>([])
   const [loading, setLoading] = useState(true)
   const [sortAscending, setSortAscending] = useState<boolean>(true)
   const [page, setPage] = useState<number>(0)
   const [itemsPerPage, setItemsPerPage] = useState<number>(15)
-  const [year, setYear] = useState<number | null>(2019)
+  const [year, setYear] = useState<number | string | null>(2019)
   const [yearMenuVisible, setYearMenuVisible] = useState(false)
   const numberOfItemsPerPageList = [5, 10, 15]
-  const years = [2017, 2018, 2019]
+  const years = [2017, 2018, 2019, 'Semua']
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const api_url = 'https://hepa-rate-api.vercel.app/api'
-        const uri = `${api_url}/criteria?year=${year}`
+        const uri = `${api_url}/criteria`
         const response = await fetch(uri)
         const result = await response.json()
-        setData(result)
+        setCriterias(result)
       } catch (error) {
         console.error('Error fetching data: ', error)
       } finally {
@@ -68,9 +67,14 @@ const CriteriaTable = () => {
     return <ActivityIndicator size="large" />
   }
 
-  const sortedData = data
-    .slice()
-    .filter((item) => item.year.year === year)
+  const sortedCriterias = criterias
+    .filter((item) => {
+      if (year === 'Semua') {
+        return true
+      }
+
+      return item.year.year === year
+    })
     .sort((a, b) =>
       sortAscending
         ? a.criteria.id - b.criteria.id
@@ -78,7 +82,7 @@ const CriteriaTable = () => {
     )
 
   const from = page * itemsPerPage
-  const to = Math.min((page + 1) * itemsPerPage, sortedData.length)
+  const to = Math.min((page + 1) * itemsPerPage, sortedCriterias.length)
 
   return (
     <Card>
@@ -89,32 +93,37 @@ const CriteriaTable = () => {
           paddingRight: 0,
         }}
       />
+
+      <View style={styles.dropdownContainer}>
+        <Menu
+          visible={yearMenuVisible}
+          onDismiss={() => setYearMenuVisible(false)}
+          anchor={
+            <Button
+              onPress={() => setYearMenuVisible(true)}
+              icon={yearMenuVisible ? 'chevron-up' : 'chevron-down'}
+              contentStyle={{ flexDirection: 'row-reverse' }}
+            >
+              {year ? year : 'Pilih Tahun'}
+            </Button>
+          }
+        >
+          <Menu.Item title="Pilih Tahun" disabled />
+          {years.map((yearOption) => (
+            <Menu.Item
+              key={yearOption}
+              onPress={() => {
+                setYear(yearOption)
+                setYearMenuVisible(false)
+              }}
+              title={yearOption.toString()}
+            />
+          ))}
+        </Menu>
+      </View>
+
       <ScrollView horizontal>
         <ScrollView>
-          <Surface style={styles.dropdownContainer}>
-            <Menu
-              visible={yearMenuVisible}
-              onDismiss={() => setYearMenuVisible(false)}
-              anchor={
-                <Button onPress={() => setYearMenuVisible(true)}>
-                  {year ? year : 'Pilih Tahun'}
-                </Button>
-              }
-            >
-              <Menu.Item title="Pilih Tahun" disabled />
-              {years.map((yearOption) => (
-                <Menu.Item
-                  key={yearOption}
-                  onPress={() => {
-                    setYear(yearOption)
-                    setYearMenuVisible(false)
-                  }}
-                  title={yearOption.toString()}
-                />
-              ))}
-            </Menu>
-          </Surface>
-
           <DataTable>
             <DataTable.Header>
               <DataTable.Title
@@ -141,7 +150,7 @@ const CriteriaTable = () => {
               <DataTable.Title style={{ width: 80 }}>Tahun</DataTable.Title>
             </DataTable.Header>
 
-            {sortedData.slice(from, to).map((item) => (
+            {sortedCriterias.slice(from, to).map((item) => (
               <DataTable.Row key={item.criteria.id}>
                 <DataTable.Cell style={{ width: 80 }}>
                   {item.criteria.id}
@@ -172,14 +181,14 @@ const CriteriaTable = () => {
 
             <DataTable.Pagination
               page={page}
-              numberOfPages={Math.ceil(sortedData.length / itemsPerPage)}
+              numberOfPages={Math.ceil(sortedCriterias.length / itemsPerPage)}
               onPageChange={(newPage) => setPage(newPage)}
-              label={`${from + 1}-${to} of ${sortedData.length}`}
+              label={`${from + 1}-${to} dari ${sortedCriterias.length}`}
               numberOfItemsPerPageList={numberOfItemsPerPageList}
               numberOfItemsPerPage={itemsPerPage}
               onItemsPerPageChange={setItemsPerPage}
               showFastPaginationControls
-              selectPageDropdownLabel="Rows per page"
+              selectPageDropdownLabel="Data per halaman"
             />
           </DataTable>
         </ScrollView>

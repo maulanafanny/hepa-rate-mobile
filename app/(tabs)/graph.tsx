@@ -5,11 +5,9 @@ import { Surface } from 'react-native-paper'
 import CriteriaChart from '@/lib/ui/components/CriteriaChart'
 
 const Graph = () => {
-  const dataValues = [3, 2, 1, 3, 2, 1, 3, 2, 1, 3, 2, 1]
-
   return (
     <Surface style={[styles.screen]}>
-      <CriteriaChart dataValues={dataValues} />
+      <CriteriaChart />
     </Surface>
   )
 }
@@ -18,7 +16,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     gap: 16,
-    padding: 32,
+    padding: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
