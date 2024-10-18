@@ -42,11 +42,11 @@ const TabLayout = () => {
                   </Tooltip>
                 }
               >
-                <Menu.Item
+                {/* <Menu.Item
                   title={Locales.t('titleSettings')}
                   leadingIcon="cog"
                   onPress={() => router.push('/(tabs)/settings')}
-                />
+                /> */}
                 <Menu.Item
                   title={Locales.t('stackNav')}
                   leadingIcon="card-multiple-outline"
@@ -70,38 +70,9 @@ const TabLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="mapping"
         options={{
-          title: Locales.t('profile'),
-          headerRight: () => (
-            <>
-              <Tooltip title={Locales.t('search')}>
-                <Appbar.Action
-                  icon="magnify"
-                  onPress={() => router.push('/search')}
-                />
-              </Tooltip>
-              <Tooltip title={Locales.t('titleSettings')}>
-                <Appbar.Action
-                  icon="cog"
-                  onPress={() => router.push('/(tabs)/settings')}
-                />
-              </Tooltip>
-            </>
-          ),
-          tabBarIcon: (props) => (
-            <MaterialCommunityIcons
-              {...props}
-              size={24}
-              name={props.focused ? 'account' : 'account-outline'}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: Locales.t('titleSettings'),
+          title: 'Pemetaaan',
           headerRight: () => (
             <Tooltip title={Locales.t('drawerNav')}>
               <Appbar.Action
@@ -114,7 +85,49 @@ const TabLayout = () => {
             <MaterialCommunityIcons
               {...props}
               size={24}
-              name={props.focused ? 'cog' : 'cog-outline'}
+              name={props.focused ? 'map' : 'map-outline'}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="graph"
+        options={{
+          title: 'Grafik',
+          headerRight: () => (
+            <Tooltip title={Locales.t('drawerNav')}>
+              <Appbar.Action
+                icon="gesture-swipe"
+                onPress={() => router.push('/drawer')}
+              />
+            </Tooltip>
+          ),
+          tabBarIcon: (props) => (
+            <MaterialCommunityIcons
+              {...props}
+              size={24}
+              name={props.focused ? 'chart-areaspline-variant' : 'chart-line'}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'Histori',
+          headerRight: () => (
+            <Tooltip title={Locales.t('drawerNav')}>
+              <Appbar.Action
+                icon="gesture-swipe"
+                onPress={() => router.push('/drawer')}
+              />
+            </Tooltip>
+          ),
+          tabBarIcon: (props) => (
+            <MaterialCommunityIcons
+              {...props}
+              size={24}
+              name={props.focused ? 'clipboard-text' : 'clipboard-text-outline'}
             />
           ),
         }}
@@ -122,7 +135,7 @@ const TabLayout = () => {
       <Tabs.Screen
         name="information"
         options={{
-          title: Locales.t('titleInformation'),
+          title: 'Informasi',
           headerRight: () => (
             <Tooltip title={Locales.t('drawerNav')}>
               <Appbar.Action
@@ -135,7 +148,11 @@ const TabLayout = () => {
             <MaterialCommunityIcons
               {...props}
               size={24}
-              name={props.focused ? 'information' : 'information-outline'}
+              name={
+                props.focused
+                  ? 'newspaper-variant'
+                  : 'newspaper-variant-outline'
+              }
             />
           ),
         }}

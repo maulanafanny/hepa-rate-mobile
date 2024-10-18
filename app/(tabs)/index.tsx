@@ -1,76 +1,134 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { router } from 'expo-router'
 import React from 'react'
-import { StyleSheet, View, Image } from 'react-native'
-import { Surface, Text, Card } from 'react-native-paper'
+import { StyleSheet } from 'react-native'
+import {
+  Surface,
+  Text,
+  Card,
+  TouchableRipple,
+  useTheme,
+} from 'react-native-paper'
 
-const TabsHome = () => (
-  <Surface style={[styles.screen]}>
-    <Text style={styles.title}>
-      {`Visualisasi Spasial Temporal Tingkat Kerawanan Hepatitis-A Kabupaten Pacitan`.toUpperCase()}
-    </Text>
+const TabsHome = () => {
+  const theme = useTheme()
 
-    <Card style={styles.fullWidthCard} mode="elevated" elevation={5}>
-      <Card.Content>
-        <View style={styles.cardContainer}>
-          <Card style={styles.card} mode="contained">
-            <Card.Content>
-              <Card.Title
-                title="Pemetaan Kerawanan"
-                style={styles.cardTitle}
-                titleStyle={{ fontWeight: 'bold', textAlign: 'center' }}
-              />
-              <Image
-                source={{ uri: 'https://via.placeholder.com/150' }}
-                style={styles.image}
-              />
-            </Card.Content>
-          </Card>
+  return (
+    <Surface style={[styles.screen]}>
+      <Text style={styles.title} variant="headlineLarge">
+        {`Visualisasi Spasial Temporal Tingkat Kerawanan Hepatitis-A Kabupaten Pacitan`.toUpperCase()}
+      </Text>
 
-          <Card style={styles.card} mode="contained">
-            <Card.Content>
-              <Card.Title
-                title="Grafik Kerawanan"
-                style={styles.cardTitle}
-                titleStyle={{ fontWeight: 'bold', textAlign: 'center' }}
-              />
-              <Image
-                source={{ uri: 'https://via.placeholder.com/150' }}
-                style={styles.image}
-              />
-            </Card.Content>
-          </Card>
+      <Card style={styles.fullWidthCard} mode="elevated" elevation={5}>
+        <Card.Content style={styles.cardContainer}>
+          <TouchableRipple
+            onPress={() => router.push('/(tabs)/mapping')}
+            rippleColor="rgba(255, 255, 255, .3)"
+            style={styles.touchable}
+            borderless
+          >
+            <Card style={styles.card} mode="elevated">
+              <Card.Content>
+                <Card.Title
+                  title="Pemetaan Kerawanan"
+                  style={styles.cardTitle}
+                  titleStyle={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    paddingRight: 0,
+                  }}
+                />
+                <MaterialCommunityIcons
+                  size={90}
+                  name="map-outline"
+                  color={theme.colors.primary}
+                />
+              </Card.Content>
+            </Card>
+          </TouchableRipple>
 
-          <Card style={styles.card} mode="contained">
-            <Card.Content>
-              <Card.Title
-                title="Histori Kasus"
-                style={styles.cardTitle}
-                titleStyle={{ fontWeight: 'bold', textAlign: 'center' }}
-              />
-              <Image
-                source={{ uri: 'https://via.placeholder.com/150' }}
-                style={styles.image}
-              />
-            </Card.Content>
-          </Card>
+          <TouchableRipple
+            onPress={() => router.push('/(tabs)/graph')}
+            rippleColor="rgba(255, 255, 255, .3)"
+            style={styles.touchable}
+            borderless
+          >
+            <Card style={styles.card} mode="elevated">
+              <Card.Content>
+                <Card.Title
+                  title="Grafik Kerawanan"
+                  style={styles.cardTitle}
+                  titleStyle={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    paddingRight: 0,
+                  }}
+                />
+                <MaterialCommunityIcons
+                  size={90}
+                  name="chart-bar-stacked"
+                  color={theme.colors.primary}
+                />
+              </Card.Content>
+            </Card>
+          </TouchableRipple>
 
-          <Card style={styles.card} mode="contained">
-            <Card.Content>
-              <Card.Title
-                title="Informasi Hepatitis-A"
-                style={styles.cardTitle}
-                titleStyle={{ fontWeight: 'bold', textAlign: 'center' }}
-              />
-              <Image
-                source={{ uri: 'https://via.placeholder.com/150' }}
-                style={styles.image}
-              />
-            </Card.Content>
-          </Card>
-        </View>
-      </Card.Content>
-    </Card>
-  </Surface>
-)
+          <TouchableRipple
+            onPress={() => router.push('/(tabs)/history')}
+            rippleColor="rgba(255, 255, 255, .3)"
+            style={styles.touchable}
+            borderless
+          >
+            <Card style={styles.card} mode="elevated">
+              <Card.Content>
+                <Card.Title
+                  title="Histori Kasus"
+                  style={styles.cardTitle}
+                  titleStyle={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    paddingRight: 0,
+                  }}
+                />
+                <MaterialCommunityIcons
+                  size={90}
+                  name="clipboard-text-search-outline"
+                  color={theme.colors.primary}
+                />
+              </Card.Content>
+            </Card>
+          </TouchableRipple>
+
+          <TouchableRipple
+            onPress={() => router.push('/(tabs)/information')}
+            rippleColor="rgba(255, 255, 255, .3)"
+            style={styles.touchable}
+            borderless
+          >
+            <Card style={styles.card} mode="elevated">
+              <Card.Content>
+                <Card.Title
+                  title="Informasi Hepatitis-A"
+                  style={styles.cardTitle}
+                  titleStyle={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    paddingRight: 0,
+                  }}
+                />
+                <MaterialCommunityIcons
+                  size={90}
+                  name="newspaper"
+                  color={theme.colors.primary}
+                />
+              </Card.Content>
+            </Card>
+          </TouchableRipple>
+        </Card.Content>
+      </Card>
+    </Surface>
+  )
+}
 
 const styles = StyleSheet.create({
   screen: {
@@ -99,17 +157,17 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-  card: {
+  touchable: {
     width: '48%',
     marginTop: 16,
+    borderRadius: 12,
   },
+  cardWrapper: {
+    flex: 1,
+  },
+  card: {},
   cardTitle: {
     paddingLeft: 0,
-  },
-  image: {
-    width: '100%',
-    height: 150,
-    resizeMode: 'cover',
   },
 })
 

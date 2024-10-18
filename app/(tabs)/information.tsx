@@ -37,7 +37,7 @@ const Information = () => {
   if (loading) {
     return (
       <Surface style={[defaultStyles.screen]}>
-        <ActivityIndicator animating />
+        <ActivityIndicator animating size="large" />
       </Surface>
     )
   }
