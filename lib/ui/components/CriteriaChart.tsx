@@ -31,7 +31,8 @@ type Criteria = {
   }
   year: {
     id: number
-    year: number
+    year: string
+    is_stale: number
   }
 }
 
@@ -43,7 +44,7 @@ const CriteriaChart = () => {
 
   const [year, setYear] = useState<number | string | null>(2019)
   const [yearMenuVisible, setYearMenuVisible] = useState(false)
-  const years = [2017, 2018, 2019]
+  const years = [2017, 2018, 2019, '2019 Prediksi']
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,16 +72,16 @@ const CriteriaChart = () => {
 
   const chartData = {
     labels: criterias
-      .filter((el: Criteria) => el.year.year === year)
+      .filter((el: Criteria) => el.year.year === String(year))
       .map((el: Criteria) => el.district.name),
 
     datasets: [
       {
         data: criterias
-          .filter((el: Criteria) => el.year.year === year)
+          .filter((el: Criteria) => el.year.year === String(year))
           .map((el: Criteria) => el.criteria.cluster_id + 1),
         colors: criterias
-          .filter((el: Criteria) => el.year.year === year)
+          .filter((el: Criteria) => el.year.year === String(year))
           .map((el: Criteria) => {
             if (el.criteria.cluster_id < 1) {
               return (opacity = 1) => `rgba(165, 214, 167, ${opacity})`

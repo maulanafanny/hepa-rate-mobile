@@ -28,7 +28,8 @@ type Criteria = {
   }
   year: {
     id: number
-    year: number
+    year: string
+    is_stale: number
   }
 }
 
@@ -36,12 +37,15 @@ const CriteriaTable = () => {
   const [criterias, setCriterias] = useState<Criteria[]>([])
   const [loading, setLoading] = useState(true)
   const [sortAscending, setSortAscending] = useState<boolean>(true)
+  const [sortByKecamatan, setSortByKecamatan] = useState<boolean>(false)
   const [page, setPage] = useState<number>(0)
   const [itemsPerPage, setItemsPerPage] = useState<number>(15)
   const [year, setYear] = useState<number | string | null>(2019)
   const [yearMenuVisible, setYearMenuVisible] = useState(false)
   const numberOfItemsPerPageList = [5, 10, 15]
-  const years = [2017, 2018, 2019, 'Semua']
+
+  // this should be dynamically fetched from the API
+  const years = [2017, 2018, 2019, '2019 Prediksi', 'Semua']
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,14 +76,23 @@ const CriteriaTable = () => {
       if (year === 'Semua') {
         return true
       }
-
-      return item.year.year === year
+      return item.year.year === String(year)
     })
-    .sort((a, b) =>
-      sortAscending
-        ? a.criteria.id - b.criteria.id
-        : b.criteria.id - a.criteria.id,
-    )
+    .sort((a, b) => {
+      // First, sort by district name
+      const nameComparison = sortAscending
+        ? a.district.name.localeCompare(b.district.name)
+        : b.district.name.localeCompare(a.district.name)
+
+      // If district names are equal, sort by year
+      if (nameComparison === 0) {
+        return sortAscending
+          ? a.year.id - b.year.id // Ascending
+          : b.year.id - a.year.id // Descending
+      }
+
+      return nameComparison
+    })
 
   const from = page * itemsPerPage
   const to = Math.min((page + 1) * itemsPerPage, sortedCriterias.length)
@@ -126,14 +139,17 @@ const CriteriaTable = () => {
         <ScrollView>
           <DataTable>
             <DataTable.Header>
+              <DataTable.Title style={{ width: 80 }}>No</DataTable.Title>
               <DataTable.Title
-                sortDirection={sortAscending ? 'ascending' : 'descending'}
-                onPress={() => setSortAscending(!sortAscending)}
-                style={{ width: 80 }}
+                sortDirection={
+                  sortAscending && sortByKecamatan ? 'ascending' : 'descending'
+                }
+                onPress={() => {
+                  setSortByKecamatan(true)
+                  setSortAscending(!sortAscending)
+                }}
+                style={{ width: 120 }}
               >
-                ID
-              </DataTable.Title>
-              <DataTable.Title style={{ width: 120 }}>
                 Kecamatan
               </DataTable.Title>
               <DataTable.Title style={{ width: 100 }}>Populasi</DataTable.Title>
@@ -150,10 +166,10 @@ const CriteriaTable = () => {
               <DataTable.Title style={{ width: 80 }}>Tahun</DataTable.Title>
             </DataTable.Header>
 
-            {sortedCriterias.slice(from, to).map((item) => (
+            {sortedCriterias.slice(from, to).map((item, index) => (
               <DataTable.Row key={item.criteria.id}>
                 <DataTable.Cell style={{ width: 80 }}>
-                  {item.criteria.id}
+                  {from + index + 1}
                 </DataTable.Cell>
                 <DataTable.Cell style={{ width: 120 }}>
                   {item.district.name}
@@ -198,18 +214,6 @@ const CriteriaTable = () => {
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    gap: 16,
-    padding: 16,
-  },
-  screenCenter: {
-    flex: 1,
-    gap: 16,
-    padding: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   dropdownContainer: {
     flexDirection: 'row',
     alignItems: 'center',
