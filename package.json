@@ -11,7 +11,8 @@
     "lint": "eslint . --fix",
     "expo:fix": "expo install --fix",
     "expo:lint": "expo lint",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "postinstall": "node ./lib/utils/postinstall.js"
   },
   "jest": {
     "preset": "jest-expo"
@@ -24,6 +25,7 @@
     "@react-navigation/native": "^6.0.2",
     "@shopify/flash-list": "1.6.4",
     "@shopify/react-native-skia": "1.2.3",
+    "@teovilla/react-native-web-maps": "^0.9.5",
     "expo": "~51.0.38",
     "expo-font": "~12.0.5",
     "expo-image": "~1.13.0",

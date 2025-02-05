@@ -1,13 +1,22 @@
 import React from 'react'
+import { StyleSheet } from 'react-native'
 import { Surface } from 'react-native-paper'
 
-import Locales from '@/lib/locales'
-import { ScreenInfo, styles } from '@/lib/ui'
+import CriteriaMap from '@/lib/ui/components/CriteriaMap'
 
 const Mapping = () => (
   <Surface style={styles.screen}>
-    <ScreenInfo title={Locales.t('profile')} path="app/(tabs)/profile.tsx" />
+    <CriteriaMap />
   </Surface>
 )
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
 
 export default Mapping
